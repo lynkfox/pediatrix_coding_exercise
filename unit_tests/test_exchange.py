@@ -1,4 +1,4 @@
-from common.exchange import determine_cost_by_weight, determine_value_by_diameter
+from common.exchange import determine_value_by_weight, determine_value_by_diameter
 from common.models import Coin
 
 
@@ -10,20 +10,24 @@ class Test_determine_cost_by_weight:
         pass
 
     def test_returns_a_float(self):
-        assert isinstance(determine_cost_by_weight(coin=Coin("Test", 3, 20)), float)
+        assert isinstance(determine_value_by_weight(coin=Coin("Test", 3, 20)), float)
 
     def test_coin_weight_of_0_returns_0_cost(self):
-        assert determine_cost_by_weight(coin=Coin("Test", weight=0, diameter=20)) == 0
+        assert determine_value_by_weight(coin=Coin("Test", weight=0, diameter=20)) == 0
 
     def test_coin_of_weight_of_MAX_or_greater_returns_0(self):
         # heaviest accepted coin is a Quarter at 5.670 grams
-        assert determine_cost_by_weight(coin=Coin("Test", weight=5.7, diameter=20)) == 0
-        assert determine_cost_by_weight(coin=Coin("Test", weight=6, diameter=20)) == 0
+        assert (
+            determine_value_by_weight(coin=Coin("Test", weight=5.7, diameter=20)) == 0
+        )
+        assert determine_value_by_weight(coin=Coin("Test", weight=6, diameter=20)) == 0
 
     def test_coin_of_weight_of_MIN_or_less_returns_0(self):
         # lightest accepted coin is a Dime at 2.268 grams
-        assert determine_cost_by_weight(coin=Coin("Test", weight=2.2, diameter=20)) == 0
-        assert determine_cost_by_weight(coin=Coin("Test", weight=1, diameter=20)) == 0
+        assert (
+            determine_value_by_weight(coin=Coin("Test", weight=2.2, diameter=20)) == 0
+        )
+        assert determine_value_by_weight(coin=Coin("Test", weight=1, diameter=20)) == 0
 
 
 class Test_determine_value_by_diameter:
