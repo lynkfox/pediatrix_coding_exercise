@@ -79,7 +79,7 @@ class Test_VendingMachine_enough_value_for_product:
         del self.test_object
 
     def test_returns_boolean(self):
-        assert isinstance(self.test_object.enough_value_for_product(""), bool)
+        assert isinstance(self.test_object.enough_value_for_product("Cola"), bool)
 
     def test_returns_True_if_current_inserted_value_greater_than_product_price(self):
         self.test_object.current_inserted_value = 2.0

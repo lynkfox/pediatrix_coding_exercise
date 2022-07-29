@@ -43,6 +43,9 @@ class VendingMachine:
     def insert_coin(self, coin: Coin) -> None:
         """
         Adds a coin's value to the self.current_inserted_value. Rejects pre-determined coin types.
+
+        Parameters:
+            coin: [Coin]
         """
 
         NOT_ACCEPTED_VALUES = [CoinValue.PENNY]
@@ -61,3 +64,5 @@ class VendingMachine:
         Returns:
             [bool]: True if current_inserted_value is more than cost of product
         """
+
+        return self.current_inserted_value >= self.get_price(product_name)
