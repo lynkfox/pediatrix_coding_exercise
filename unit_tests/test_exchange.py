@@ -29,6 +29,38 @@ class Test_determine_cost_by_weight:
         )
         assert determine_value_by_weight(coin=Coin("Test", weight=1, diameter=20)) == 0
 
+    def test_passed_values_for_quarter_returns_25_cents(self):
+        assert (
+            determine_value_by_weight(
+                coin=Coin("TestQuarter", weight=5.670, diameter=24.26)
+            )
+            == 0.25
+        )
+
+    def test_passed_values_for_dime_returns_10_cents(self):
+        assert (
+            determine_value_by_weight(
+                coin=Coin("TestQuarter", weight=2.268, diameter=17.91)
+            )
+            == 0.1
+        )
+
+    def test_passed_values_for_nickle_returns_5_cents(self):
+        assert (
+            determine_value_by_weight(
+                coin=Coin("TestQuarter", weight=5.0, diameter=21.21)
+            )
+            == 0.05
+        )
+
+    def test_passed_values_for_penny_returns_1_cent(self):
+        assert (
+            determine_value_by_weight(
+                coin=Coin("TestQuarter", weight=2.5, diameter=19.05)
+            )
+            == 0.01
+        )
+
 
 class Test_determine_value_by_diameter:
     def setup(self):
@@ -59,4 +91,36 @@ class Test_determine_value_by_diameter:
         )
         assert (
             determine_value_by_diameter(coin=Coin("Test", weight=3, diameter=10)) == 0
+        )
+
+    def test_passed_values_for_quarter_returns_25_cents(self):
+        assert (
+            determine_value_by_diameter(
+                coin=Coin("TestQuarter", weight=5.670, diameter=24.26)
+            )
+            == 0.25
+        )
+
+    def test_passed_values_for_dime_returns_10_cents(self):
+        assert (
+            determine_value_by_diameter(
+                coin=Coin("TestQuarter", weight=2.268, diameter=17.91)
+            )
+            == 0.1
+        )
+
+    def test_passed_values_for_nickle_returns_5_cents(self):
+        assert (
+            determine_value_by_diameter(
+                coin=Coin("TestQuarter", weight=5.0, diameter=21.21)
+            )
+            == 0.05
+        )
+
+    def test_passed_values_for_penny_returns_1_cent(self):
+        assert (
+            determine_value_by_diameter(
+                coin=Coin("TestQuarter", weight=2.5, diameter=19.05)
+            )
+            == 0.01
         )
