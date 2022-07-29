@@ -3,7 +3,8 @@ from common.models import Product
 _PRODUCT_NAME = "TestProduct"
 _PRODUCT_COST = 1.50
 
-class Test_Product():
+
+class Test_Product:
     def setup(self):
         self._product = Product(name=_PRODUCT_NAME, cost=_PRODUCT_COST)
 
