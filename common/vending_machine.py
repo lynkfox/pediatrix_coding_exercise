@@ -16,3 +16,14 @@ class VendingMachine:
         self.items = [COLA, CANDY, CHIPS]
         self.display = DisplayMessage.INSERT_COIN
         self.current_inserted_value = 0.0
+
+        self._item_mapping = {item.name: item.cost for item in self.items}
+
+    def get_price(self, product_name: str) -> float:
+        """
+        Returns the cost of a product based on its name.
+        """
+        try:
+            return self._item_mapping[product_name]
+        except KeyError:
+            raise ValueError("NoItemByName")
