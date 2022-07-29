@@ -1,5 +1,6 @@
 from common.exchange import determine_value_by_weight, determine_value_by_diameter
 from common.models import Coin
+from common.constants import CoinValue
 
 
 class Test_determine_cost_by_weight:
@@ -34,7 +35,7 @@ class Test_determine_cost_by_weight:
             determine_value_by_weight(
                 coin=Coin("TestQuarter", weight=5.670, diameter=24.26)
             )
-            == 0.25
+            == CoinValue.QUARTER
         )
 
     def test_passed_values_for_dime_returns_10_cents(self):
@@ -42,7 +43,7 @@ class Test_determine_cost_by_weight:
             determine_value_by_weight(
                 coin=Coin("TestQuarter", weight=2.268, diameter=17.91)
             )
-            == 0.1
+            == CoinValue.DIME
         )
 
     def test_passed_values_for_nickle_returns_5_cents(self):
@@ -50,7 +51,7 @@ class Test_determine_cost_by_weight:
             determine_value_by_weight(
                 coin=Coin("TestQuarter", weight=5.0, diameter=21.21)
             )
-            == 0.05
+            == CoinValue.NICKLE
         )
 
     def test_passed_values_for_penny_returns_1_cent(self):
@@ -58,7 +59,7 @@ class Test_determine_cost_by_weight:
             determine_value_by_weight(
                 coin=Coin("TestQuarter", weight=2.5, diameter=19.05)
             )
-            == 0.01
+            == CoinValue.PENNY
         )
 
 
@@ -98,7 +99,7 @@ class Test_determine_value_by_diameter:
             determine_value_by_diameter(
                 coin=Coin("TestQuarter", weight=5.670, diameter=24.26)
             )
-            == 0.25
+            == CoinValue.QUARTER
         )
 
     def test_passed_values_for_dime_returns_10_cents(self):
@@ -106,7 +107,7 @@ class Test_determine_value_by_diameter:
             determine_value_by_diameter(
                 coin=Coin("TestQuarter", weight=2.268, diameter=17.91)
             )
-            == 0.1
+            == CoinValue.DIME
         )
 
     def test_passed_values_for_nickle_returns_5_cents(self):
@@ -114,7 +115,7 @@ class Test_determine_value_by_diameter:
             determine_value_by_diameter(
                 coin=Coin("TestQuarter", weight=5.0, diameter=21.21)
             )
-            == 0.05
+            == CoinValue.NICKLE
         )
 
     def test_passed_values_for_penny_returns_1_cent(self):
@@ -122,5 +123,5 @@ class Test_determine_value_by_diameter:
             determine_value_by_diameter(
                 coin=Coin("TestQuarter", weight=2.5, diameter=19.05)
             )
-            == 0.01
+            == CoinValue.PENNY
         )
