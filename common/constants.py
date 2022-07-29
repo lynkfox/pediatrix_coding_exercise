@@ -4,7 +4,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class CoinBoundary:
     """
-    Minimum and Maximum values for Coins weight and diameter
+    Minimum and Maximum values for Coins weight and diameter.
     """
 
     MIN_DIAMETER: float = 17.0
@@ -23,3 +23,14 @@ class CoinValue:
     NICKLE: float = 0.05
     DIME: float = 0.1
     QUARTER: float = 0.25
+
+
+@dataclass(frozen=True)
+class DisplayMessage:
+    """
+    Messages the Vending Machine can display.
+    """
+
+    INSERT_COIN: str = "INSERT COIN"
+    THANK_YOU: str = "THANK YOU"
+    PRICE: str = "PRICE"
