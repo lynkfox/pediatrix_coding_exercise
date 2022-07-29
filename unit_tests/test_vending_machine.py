@@ -17,3 +17,9 @@ class Test_VendingMachine:
 
     def test_display_defaults_to_INSERT_COIN(self):
         assert self.test_object.display == DisplayMessage.INSERT_COIN
+
+    def test_has_current_inserted_value_that_is_a_float(self):
+        assert isinstance(self.test_object.current_inserted_value, float)
+
+    def test_current_inserted_value_defaults_to_0_0(self):
+        self.test_object.current_inserted_value == 0.0

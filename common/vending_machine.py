@@ -10,3 +10,4 @@ class VendingMachine:
 
         self.items = [COLA, CANDY, CHIPS]
         self.display = DisplayMessage.INSERT_COIN
+        self.current_inserted_value = 0.0
