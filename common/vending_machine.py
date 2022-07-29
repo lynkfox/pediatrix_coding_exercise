@@ -22,6 +22,15 @@ class VendingMachine:
     def get_price(self, product_name: str) -> float:
         """
         Returns the cost of a product based on its name.
+
+        Parameters:
+            product_name: [str] - The name of a product
+
+        Returns:
+            [float]: The cost of the product
+
+        Raises:
+            ValueError(NoItemByName) if item name not found.
         """
         try:
             return self._item_mapping[product_name]
