@@ -69,3 +69,27 @@ class Test_VendingMachine_insert_coin:
         self.test_object.insert_coin(PENNY)
 
         assert self.test_object.current_inserted_value == original_value
+
+
+class Test_VendingMachine_enough_value_for_product:
+    def setup(self):
+        self.test_object = VendingMachine()
+
+    def teardown(self):
+        del self.test_object
+
+    def test_returns_boolean(self):
+        assert isinstance(self.test_object.enough_value_for_product(""), bool)
+
+    def test_returns_True_if_current_inserted_value_greater_than_product_price(self):
+        self.test_object.current_inserted_value = 2.0
+
+        assert self.test_object.enough_value_for_product("Cola") is True
+
+    def test_returns_true_if_exactly_enough_for_product(self):
+        self.test_object.current_inserted_value = COLA.cost
+
+        assert self.test_object.enough_value_for_product("Cola") is True
+
+    def test_returns_false_if_not_enough_for_product(self):
+        assert self.test_object.enough_value_for_product("Cola") is False

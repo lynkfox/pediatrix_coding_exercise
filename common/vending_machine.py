@@ -50,3 +50,14 @@ class VendingMachine:
         value = determine_value_by_weight(coin)
 
         self.current_inserted_value += 0 if value in NOT_ACCEPTED_VALUES else value
+
+    def enough_value_for_product(self, product_name: str) -> bool:
+        """
+        Accepts a product, and determines if enough value has been inserted into the VendingMachine.
+
+        Parameters:
+            product: [str] - The name of a product.
+
+        Returns:
+            [bool]: True if current_inserted_value is more than cost of product
+        """
