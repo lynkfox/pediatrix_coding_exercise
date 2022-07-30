@@ -41,10 +41,11 @@ class Test_E2E_scenarios:
         self,
     ):
         product = self.Vendomatic.purchase("Candy")
+        candy_cost = f"$ {'{:.2f}'.format(CANDY.cost/100)}"
 
         assert product is None
         assert (
-            self.Vendomatic.check_display() == f"{DisplayMessage.PRICE}: {CANDY.cost}"
+            self.Vendomatic.check_display() == f"{DisplayMessage.PRICE}: {candy_cost}"
         )
 
     def test_enough_money_for_product_check_display_says_thank_you(self):

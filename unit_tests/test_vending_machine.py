@@ -177,18 +177,19 @@ class Test_VendingMachine_check_display:
     def test_when_zero_inserted_value_returns_price_of_vend_item(self):
         self.test_object._vend_product("Cola")
         self.test_object.check_display()
+        cola_cost = f"$ {'{:.2f}'.format(COLA.cost/100)}"
 
         assert (
-            self.test_object.check_display() == f"{DisplayMessage.PRICE}: {COLA.cost}"
+            self.test_object.check_display() == f"{DisplayMessage.PRICE}: {cola_cost}"
         )
 
     def test_when_not_enough_value_for_vend_item_returns_price_of_vend_item(self):
         self.test_object._current_inserted_value = 10
         self.test_object._vend_product("Cola")
-        self.test_object.check_display()
+        cola_cost = f"$ {'{:.2f}'.format(COLA.cost/100)}"
 
         assert (
-            self.test_object.check_display() == f"{DisplayMessage.PRICE}: {COLA.cost}"
+            self.test_object.check_display() == f"{DisplayMessage.PRICE}: {cola_cost}"
         )
 
     def test_if_vending_not_occurred_but_coins_in_machine_displays_current_amount(self):

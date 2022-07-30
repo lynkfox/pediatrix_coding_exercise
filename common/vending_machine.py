@@ -27,6 +27,7 @@ class VendingMachine:
         self._current_inserted_value: int = 0
         self._item_mapping = {item.name: item for item in self.items}
         self._item_vended_flag = False
+        self._price_check_flag = False
 
     def insert_coin(self, coin: Coin) -> None:
         """
@@ -59,7 +60,11 @@ class VendingMachine:
         ):
             self._display = DisplayMessage.INSERT_COIN
 
+        elif self._current_inserted_value > 0 and self._price_check_flag is False:
+            self._display = self._format_money_value(self._current_inserted_value)
+
         self._item_vended_flag = False
+        self._price_check_flag = False
         return self._display
 
     def purchase(self, product_name: str) -> Optional[Product]:
@@ -140,7 +145,10 @@ class VendingMachine:
             return product
 
         else:
-            self._display = f"{DisplayMessage.PRICE}: {product.cost}"
+            self._display = (
+                f"{DisplayMessage.PRICE}: {self._format_money_value(product.cost)}"
+            )
+            self._price_check_flag = True
             return None
 
     def _make_change(self):
@@ -156,3 +164,6 @@ class VendingMachine:
 
         if self._item_vended_flag is True:
             self.coin_return = determine_return_coins(self._current_inserted_value)
+
+    def _format_money_value(self, value: int):
+        return f"$ {'{:.2f}'.format(value/100)}"
