@@ -139,6 +139,14 @@ class Test_VendingMachine_vend_product:
         with pytest.raises(KeyError):
             self.test_object.vend_product("Randomness")
 
+    def test_reduces_current_inserted_amount_by_cost_of_product_if_successful_sale(
+        self,
+    ):
+        self.test_object.current_inserted_value = COLA.cost + 1
+        self.test_object.vend_product("Cola")
+
+        assert self.test_object.current_inserted_value == 1
+
 
 class Test_VendingMachine_check_display:
     def setup(self):
@@ -211,7 +219,7 @@ class Test_VendingMachine_make_change:
 
         self.test_object.make_change()
         assert len(self.test_object.coin_return) == 1
-        assert NICKLE in self.test_object.coin_return
+        assert DIME in self.test_object.coin_return
 
     def test_adds_multiple_coins_to_coin_return_if_value_of_change_greater_than_single_coin_value(
         self,

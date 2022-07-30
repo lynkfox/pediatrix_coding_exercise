@@ -2,7 +2,11 @@ from external.item_stock import COLA, CANDY, CHIPS
 from common.constants import DisplayMessage, CoinValue
 from common.models import Coin, Product
 from typing import List, Optional
-from common.exchange import determine_value_by_diameter, determine_value_by_weight
+from common.exchange import (
+    determine_value_by_diameter,
+    determine_value_by_weight,
+    determine_return_coins,
+)
 
 
 class VendingMachine:
@@ -92,6 +96,7 @@ class VendingMachine:
         if self.enough_value_for_product(product_name):
             self.display = DisplayMessage.THANK_YOU
             self._item_vended_flag = True
+            self.current_inserted_value = self.current_inserted_value - product.cost
             return product
 
         else:
@@ -122,4 +127,5 @@ class VendingMachine:
             None
         """
 
-        pass
+        if self._item_vended_flag is True:
+            self.coin_return = determine_return_coins(self.current_inserted_value)
