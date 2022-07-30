@@ -113,12 +113,11 @@ class Test_VendingMachine_vend_product:
 
         assert self.test_object.vend_product("Cola") == COLA
 
-    def test_raises_exception_if_not_enough_value(self):
-        with pytest.raises(Exception, match="NotEnoughInsertedValue"):
-            self.test_object.vend_product("Cola")
+    def test_returns_none_if_not_enough_value(self):
+        assert self.test_object.vend_product("Cola") is None
 
-    def test_raises_ValueError_if_product_name_not_found(self):
-        with pytest.raises(ValueError, match="NoItemByName"):
+    def test_raises_KeyError_if_product_name_not_found(self):
+        with pytest.raises(KeyError):
             self.test_object.vend_product("Randomness")
 
 
@@ -148,7 +147,16 @@ class Test_VendingMachine_check_display:
 
         assert self.test_object.check_display() == DisplayMessage.INSERT_COIN
 
-    def test_when_no_item_value_returns_price_of_vend_item(self):
+    def test_when_zero_inserted_value_returns_price_of_vend_item(self):
+        self.test_object.vend_product("Cola")
+        self.test_object.check_display()
+
+        assert (
+            self.test_object.check_display() == f"{DisplayMessage.PRICE}: {COLA.cost}"
+        )
+
+    def test_when_not_enough_value_for_vend_item_returns_price_of_vend_item(self):
+        self.test_object.current_inserted_value = 0.1
         self.test_object.vend_product("Cola")
         self.test_object.check_display()
 

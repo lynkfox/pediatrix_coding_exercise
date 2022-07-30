@@ -1,7 +1,7 @@
 from external.item_stock import COLA, CANDY, CHIPS
 from common.constants import DisplayMessage, CoinValue
 from common.models import Coin, Product
-from typing import List
+from typing import List, Optional
 from common.exchange import determine_value_by_diameter, determine_value_by_weight
 
 
@@ -21,6 +21,7 @@ class VendingMachine:
         self.current_inserted_value: float = 0.0
 
         self._item_mapping = {item.name: item for item in self.items}
+        self._item_vended_flag = False
 
     def get_price(self, product_name: str) -> float:
         """
@@ -67,7 +68,7 @@ class VendingMachine:
 
         return self.current_inserted_value >= self.get_price(product_name)
 
-    def vend_product(self, product_name: str) -> Product:
+    def vend_product(self, product_name: str) -> Optional[Product]:
         """
         Outputs the requested product if enough value is in the VendingMachine
 
@@ -75,18 +76,26 @@ class VendingMachine:
             product_name: [str] - the name of a product to vend.
 
         Returns:
-            [Product]: A Product requested
+            [Optional[Product]]: A Product requested or None if not enough value.
 
         Raises:
-            [Exception(NotEnoughInsertedValue)] - If current_inserted_value is not enough for the product requested.
             [ValueError] - If product name not found.
         """
 
+        product = self._item_mapping[product_name]
+
         if self.enough_value_for_product(product_name):
-            return self._item_mapping[product_name]
+            self.display = DisplayMessage.THANK_YOU
+            self._item_vended_flag = True
+            return product
 
         else:
-            raise Exception("NotEnoughInsertedValue")
+            self.display = f"{DisplayMessage.PRICE}: {product.cost}"
+            return None
 
     def check_display(self):
+        if self.display == DisplayMessage.THANK_YOU and self._item_vended_flag is False:
+            self.display = DisplayMessage.INSERT_COIN
+
+        self._item_vended_flag = False
         return self.display
