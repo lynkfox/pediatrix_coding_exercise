@@ -43,17 +43,17 @@ class Test_VendingMachine_get_price:
         del self.test_object
 
     def test_returns_price_as_a_float(self):
-        assert isinstance(self.test_object.get_price("Cola"), float)
+        assert isinstance(self.test_object._get_price("Cola"), float)
 
     def test_given_cola_returns_its_cost(self):
-        assert self.test_object.get_price("Cola") == COLA.cost
+        assert self.test_object._get_price("Cola") == COLA.cost
 
     def test_given_chips_returns_its_cost(self):
-        assert self.test_object.get_price("Chips") == CHIPS.cost
+        assert self.test_object._get_price("Chips") == CHIPS.cost
 
     def test_raises_ValueError_if_cannot_find_item_name(self):
         with pytest.raises(ValueError, match="NoItemByName"):
-            self.test_object.get_price("GobblyGook")
+            self.test_object._get_price("GobblyGook")
 
 
 class Test_VendingMachine_insert_coin:
@@ -252,3 +252,10 @@ class Test_VendingMachine_purchase:
 
     def test_if_not_enough_value_returns_none(self):
         assert self.test_object.purchase("Cola") is None
+
+    def test_if_change_given_current_value_in_machine_is_zero(self):
+        self.test_object._current_inserted_value = COLA.cost + 0.1
+
+        self.test_object.purchase("Cola")
+
+        assert self.test_object._current_inserted_value == 0

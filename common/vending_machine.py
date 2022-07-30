@@ -28,24 +28,6 @@ class VendingMachine:
         self._item_mapping = {item.name: item for item in self.items}
         self._item_vended_flag = False
 
-    def get_price(self, product_name: str) -> float:
-        """
-        Returns the cost of a product based on its name.
-
-        Parameters:
-            product_name: [str] - The name of a product
-
-        Returns:
-            [float]: The cost of the product
-
-        Raises:
-            ValueError(NoItemByName) if item name not found.
-        """
-        try:
-            return self._item_mapping[product_name].cost
-        except KeyError:
-            raise ValueError("NoItemByName")
-
     def insert_coin(self, coin: Coin) -> None:
         """
         Adds a coin's value to the self.current_inserted_value. Rejects pre-determined coin types.
@@ -80,6 +62,48 @@ class VendingMachine:
         self._item_vended_flag = False
         return self._display
 
+    def purchase(self, product_name: str) -> Optional[Product]:
+        """
+        Purchases a product if enough value is in the machine.
+
+        Parameters:
+            product_name: [str] - The name of the product to be purchased
+
+        Returns:
+            [Product]: The Product purchased
+        """
+
+        try:
+            product = self._vend_product(product_name)
+
+            if product is not None and self._item_vended_flag is True:
+                self._make_change()
+                self._current_inserted_value = 0.0
+
+        except Exception:
+            product = None
+
+        finally:
+            return product
+
+    def _get_price(self, product_name: str) -> float:
+        """
+        Returns the cost of a product based on its name.
+
+        Parameters:
+            product_name: [str] - The name of a product
+
+        Returns:
+            [float]: The cost of the product
+
+        Raises:
+            ValueError(NoItemByName) if item name not found.
+        """
+        try:
+            return self._item_mapping[product_name].cost
+        except KeyError:
+            raise ValueError("NoItemByName")
+
     def _enough_value_for_product(self, product_name: str) -> bool:
         """
         Accepts a product, and determines if enough value has been inserted into the VendingMachine.
@@ -91,7 +115,7 @@ class VendingMachine:
             [bool]: True if current_inserted_value is more than cost of product
         """
 
-        return self._current_inserted_value >= self.get_price(product_name)
+        return self._current_inserted_value >= self._get_price(product_name)
 
     def _vend_product(self, product_name: str) -> Optional[Product]:
         """
