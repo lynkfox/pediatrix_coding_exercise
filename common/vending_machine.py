@@ -20,7 +20,7 @@ class VendingMachine:
         self.display: str = DisplayMessage.INSERT_COIN
         self.current_inserted_value: float = 0.0
 
-        self._item_mapping = {item.name: item.cost for item in self.items}
+        self._item_mapping = {item.name: item for item in self.items}
 
     def get_price(self, product_name: str) -> float:
         """
@@ -36,7 +36,7 @@ class VendingMachine:
             ValueError(NoItemByName) if item name not found.
         """
         try:
-            return self._item_mapping[product_name]
+            return self._item_mapping[product_name].cost
         except KeyError:
             raise ValueError("NoItemByName")
 
@@ -66,3 +66,24 @@ class VendingMachine:
         """
 
         return self.current_inserted_value >= self.get_price(product_name)
+
+    def vend_product(self, product_name: str) -> Product:
+        """
+        Outputs the requested product if enough value is in the VendingMachine
+
+        Parameters:
+            product_name: [str] - the name of a product to vend.
+
+        Returns:
+            [Product]: A Product requested
+
+        Raises:
+            [Exception(NotEnoughInsertedValue)] - If current_inserted_value is not enough for the product requested.
+            [KeyError] - If product name not found.
+        """
+
+        if self.enough_value_for_product(product_name):
+            return self._item_mapping[product_name]
+
+        else:
+            raise Exception("NotEnoughInsertedValue")

@@ -116,3 +116,7 @@ class Test_VendingMachine_vend_product:
     def test_raises_exception_if_not_enough_value(self):
         with pytest.raises(Exception, match="NotEnoughInsertedValue"):
             self.test_object.vend_product("Cola")
+
+    def test_raises_ValueError_if_product_name_not_found(self):
+        with pytest.raises(ValueError, match="NoItemByName"):
+            self.test_object.vend_product("Randomness")
