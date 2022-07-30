@@ -79,7 +79,7 @@ class VendingMachine:
 
         Raises:
             [Exception(NotEnoughInsertedValue)] - If current_inserted_value is not enough for the product requested.
-            [KeyError] - If product name not found.
+            [ValueError] - If product name not found.
         """
 
         if self.enough_value_for_product(product_name):
@@ -87,3 +87,6 @@ class VendingMachine:
 
         else:
             raise Exception("NotEnoughInsertedValue")
+
+    def check_display(self):
+        return self.display

@@ -120,3 +120,38 @@ class Test_VendingMachine_vend_product:
     def test_raises_ValueError_if_product_name_not_found(self):
         with pytest.raises(ValueError, match="NoItemByName"):
             self.test_object.vend_product("Randomness")
+
+
+class Test_VendingMachine_check_display:
+    def setup(self):
+        self.test_object = VendingMachine()
+
+    def teardown(self):
+        del self.test_object
+
+    def test_returns_a_string(self):
+        assert isinstance(self.test_object.check_display(), str)
+
+    def test_if_nothing_else_done_returns_InsertCoin(self):
+        assert self.test_object.check_display() == DisplayMessage.INSERT_COIN
+
+    def test_after_product_successfully_vended_returns_ThankYou(self):
+        self.test_object.current_inserted_value = COLA.cost
+        self.test_object.vend_product("Cola")
+
+        assert self.test_object.check_display() == DisplayMessage.THANK_YOU
+
+    def test_a_second_time_after_vended_product_returns_InsertCoin(self):
+        self.test_object.current_inserted_value = COLA.cost
+        self.test_object.vend_product("Cola")
+        self.test_object.check_display()
+
+        assert self.test_object.check_display() == DisplayMessage.INSERT_COIN
+
+    def test_when_no_item_value_returns_price_of_vend_item(self):
+        self.test_object.vend_product("Cola")
+        self.test_object.check_display()
+
+        assert (
+            self.test_object.check_display() == f"{DisplayMessage.PRICE}: {COLA.cost}"
+        )
