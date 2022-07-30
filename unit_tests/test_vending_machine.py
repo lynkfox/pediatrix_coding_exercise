@@ -28,6 +28,9 @@ class Test_VendingMachine:
     def test_current_inserted_value_defaults_to_0_0(self):
         self.test_object.current_inserted_value == 0.0
 
+    def test_has_coin_return_that_is_a_list(self):
+        assert isinstance(self.test_object.coin_return, list)
+
 
 class Test_VendingMachine_get_price:
     def setup(self):
@@ -70,6 +73,13 @@ class Test_VendingMachine_insert_coin:
         self.test_object.insert_coin(PENNY)
 
         assert self.test_object.current_inserted_value == original_value
+
+    def test_if_invalid_coin_given_coin_is_put_in_coin_return(self):
+        original_value = self.test_object.current_inserted_value
+
+        self.test_object.insert_coin(PENNY)
+
+        assert PENNY in self.test_object.coin_return
 
 
 class Test_VendingMachine_enough_value_for_product:
