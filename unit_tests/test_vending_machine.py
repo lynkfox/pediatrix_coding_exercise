@@ -183,13 +183,18 @@ class Test_VendingMachine_check_display:
         )
 
     def test_when_not_enough_value_for_vend_item_returns_price_of_vend_item(self):
-        self.test_object._current_inserted_value = 0.1
+        self.test_object._current_inserted_value = 10
         self.test_object._vend_product("Cola")
         self.test_object.check_display()
 
         assert (
             self.test_object.check_display() == f"{DisplayMessage.PRICE}: {COLA.cost}"
         )
+
+    def test_if_vending_not_occurred_but_coins_in_machine_displays_current_amount(self):
+        self.test_object._current_inserted_value = 10
+
+        assert self.test_object.check_display() == "$ 0.10"
 
 
 class Test_VendingMachine_make_change:
