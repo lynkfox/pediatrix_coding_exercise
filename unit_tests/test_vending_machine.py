@@ -228,3 +228,27 @@ class Test_VendingMachine_make_change:
         self.test_object._vend_product("Cola")
         self.test_object._make_change()
         assert len(self.test_object.coin_return) > 1
+
+
+class Test_VendingMachine_purchase:
+    def setup(self):
+        self.test_object = VendingMachine()
+
+    def teardown(self):
+        del self.test_object
+
+    def test_if_enough_value_purchase_returns_product(self):
+        self.test_object._current_inserted_value = COLA.cost
+
+        results = self.test_object.purchase("Cola")
+
+        assert results == COLA
+
+    def test_change_is_same_as_in_coin_return(self):
+        self.test_object._current_inserted_value = COLA.cost + 0.1
+
+        self.test_object.purchase("Cola")
+        assert self.test_object.coin_return[0] == DIME
+
+    def test_if_not_enough_value_returns_none(self):
+        assert self.test_object.purchase("Cola") is None
