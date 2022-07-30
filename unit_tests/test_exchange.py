@@ -1,6 +1,11 @@
-from common.exchange import determine_value_by_weight, determine_value_by_diameter
+from common.exchange import (
+    determine_value_by_weight,
+    determine_value_by_diameter,
+    determine_return_coins,
+)
 from common.models import Coin
 from common.constants import CoinValue
+from external.coins import NICKLE, DIME, QUARTER
 
 
 class Test_determine_cost_by_weight:
@@ -125,3 +130,26 @@ class Test_determine_value_by_diameter:
             )
             == CoinValue.PENNY
         )
+
+
+class Test_determine_return_coins:
+    def test_returns_list(self):
+        assert isinstance(determine_return_coins(change_value=0), list)
+
+    def test_returns_single_coin_if_value_matches(self):
+        change = determine_return_coins(change_value=0.05)
+        assert len(change) == 1
+        assert change[0] == NICKLE
+
+    def test_returns_multiple_coins_if_greater_than_all_coin_values(self):
+        change = determine_return_coins(change_value=0.85)
+        assert len(change) > 1
+
+    def test_returns_least_amount_of_coins_possible_to_make_value(self):
+        change = determine_return_coins(change_value=0.4)
+        # 40 cents should be 1 quarter, 1 dime, 1 nickle
+
+        assert len(change) == 3
+        assert NICKLE in change
+        assert DIME in change
+        assert QUARTER in change
