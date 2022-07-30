@@ -1,8 +1,8 @@
 from common.models import Product
 
 
-COLA = Product(name="Cola", cost=1.0)
+COLA = Product(name="Cola", cost=100)
 
-CHIPS = Product(name="Chips", cost=0.5)
+CHIPS = Product(name="Chips", cost=50)
 
-CANDY = Product(name="Candy", cost=0.65)
+CANDY = Product(name="Candy", cost=65)

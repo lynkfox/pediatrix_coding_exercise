@@ -137,16 +137,16 @@ class Test_determine_return_coins:
         assert isinstance(determine_return_coins(change_value=0), list)
 
     def test_returns_single_coin_if_value_matches(self):
-        change = determine_return_coins(change_value=0.05)
+        change = determine_return_coins(change_value=5)
         assert len(change) == 1
         assert change[0] == NICKLE
 
     def test_returns_multiple_coins_if_greater_than_all_coin_values(self):
-        change = determine_return_coins(change_value=0.85)
+        change = determine_return_coins(change_value=85)
         assert len(change) > 1
 
     def test_returns_least_amount_of_coins_possible_to_make_value(self):
-        change = determine_return_coins(change_value=0.4)
+        change = determine_return_coins(change_value=40)
         # 40 cents should be 1 quarter, 1 dime, 1 nickle
 
         assert len(change) == 3

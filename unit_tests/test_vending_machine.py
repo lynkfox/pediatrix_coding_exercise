@@ -22,11 +22,11 @@ class Test_VendingMachine:
     def test_display_defaults_to_INSERT_COIN(self):
         assert self.test_object._display == DisplayMessage.INSERT_COIN
 
-    def test_has_current_inserted_value_that_is_a_float(self):
-        assert isinstance(self.test_object._current_inserted_value, float)
+    def test_has_current_inserted_value_that_is_an_int(self):
+        assert isinstance(self.test_object._current_inserted_value, int)
 
     def test_current_inserted_value_defaults_to_0_0(self):
-        self.test_object._current_inserted_value == 0.0
+        self.test_object._current_inserted_value == 0
 
     def test_has_coin_return_that_is_a_list(self):
         assert isinstance(self.test_object.coin_return, list)
@@ -42,8 +42,8 @@ class Test_VendingMachine_get_price:
     def teardown(self):
         del self.test_object
 
-    def test_returns_price_as_a_float(self):
-        assert isinstance(self.test_object._get_price("Cola"), float)
+    def test_returns_price_as_an_int(self):
+        assert isinstance(self.test_object._get_price("Cola"), int)
 
     def test_given_cola_returns_its_cost(self):
         assert self.test_object._get_price("Cola") == COLA.cost
@@ -64,11 +64,11 @@ class Test_VendingMachine_insert_coin:
         del self.test_object
 
     def test_given_a_valid_coin_updates_current_inserted_value(self):
-        assert self.test_object._current_inserted_value == 0.0
+        assert self.test_object._current_inserted_value == 0
 
         self.test_object.insert_coin(DIME)
 
-        assert self.test_object._current_inserted_value == 0.1
+        assert self.test_object._current_inserted_value == 10
 
     def test_given_an_invalid_coin_current_inserted_value_does_not_change(self):
         original_value = self.test_object._current_inserted_value
@@ -102,7 +102,7 @@ class Test_VendingMachine_enough_value_for_product:
         assert isinstance(self.test_object._enough_value_for_product("Cola"), bool)
 
     def test_returns_True_if_current_inserted_value_greater_than_product_price(self):
-        self.test_object._current_inserted_value = 2.0
+        self.test_object._current_inserted_value = 200
 
         assert self.test_object._enough_value_for_product("Cola") is True
 
@@ -206,7 +206,7 @@ class Test_VendingMachine_make_change:
     def test_adds_a_single_nickle_to_coin_return_if_change_is_value_equal_to_nickle(
         self,
     ):
-        self.test_object._current_inserted_value = COLA.cost + 0.05
+        self.test_object._current_inserted_value = COLA.cost + 5
         self.test_object._vend_product("Cola")
 
         self.test_object._make_change()
@@ -214,7 +214,7 @@ class Test_VendingMachine_make_change:
         assert NICKLE in self.test_object.coin_return
 
     def test_adds_a_single_dime_to_coin_return_if__change_is_value_equal_to_dime(self):
-        self.test_object._current_inserted_value = COLA.cost + 0.1
+        self.test_object._current_inserted_value = COLA.cost + 10
         self.test_object._vend_product("Cola")
 
         self.test_object._make_change()
@@ -224,7 +224,7 @@ class Test_VendingMachine_make_change:
     def test_adds_multiple_coins_to_coin_return_if_value_of_change_greater_than_single_coin_value(
         self,
     ):
-        self.test_object._current_inserted_value = COLA.cost + 1
+        self.test_object._current_inserted_value = COLA.cost + 100
         self.test_object._vend_product("Cola")
         self.test_object._make_change()
         assert len(self.test_object.coin_return) > 1
@@ -245,7 +245,7 @@ class Test_VendingMachine_purchase:
         assert results == COLA
 
     def test_change_is_same_as_in_coin_return(self):
-        self.test_object._current_inserted_value = COLA.cost + 0.1
+        self.test_object._current_inserted_value = COLA.cost + 10
 
         self.test_object.purchase("Cola")
         assert self.test_object.coin_return[0] == DIME
@@ -254,7 +254,7 @@ class Test_VendingMachine_purchase:
         assert self.test_object.purchase("Cola") is None
 
     def test_if_change_given_current_value_in_machine_is_zero(self):
-        self.test_object._current_inserted_value = COLA.cost + 0.1
+        self.test_object._current_inserted_value = COLA.cost + 10
 
         self.test_object.purchase("Cola")
 

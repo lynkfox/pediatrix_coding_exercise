@@ -1,7 +1,7 @@
 from common.models import Product
 
 _PRODUCT_NAME = "TestProduct"
-_PRODUCT_COST = 1.50
+_PRODUCT_COST = 150
 
 
 class Test_Product:
@@ -20,5 +20,5 @@ class Test_Product:
     def test_has_a_cost(self):
         assert self._product.cost == _PRODUCT_COST
 
-    def test_cost_is_a_float(self):
-        assert isinstance(self._product.cost, float)
+    def test_cost_is_a_int(self):
+        assert isinstance(self._product.cost, int)

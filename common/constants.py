@@ -19,10 +19,10 @@ class CoinValue:
     Values of various coins.
     """
 
-    PENNY: float = 0.01
-    NICKLE: float = 0.05
-    DIME: float = 0.1
-    QUARTER: float = 0.25
+    PENNY: int = 1
+    NICKLE: int = 5
+    DIME: int = 10
+    QUARTER: int = 25
 
 
 @dataclass(frozen=True)

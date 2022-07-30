@@ -24,7 +24,7 @@ class VendingMachine:
         self.coin_return: List[Coin] = []
 
         self._display: str = DisplayMessage.INSERT_COIN
-        self._current_inserted_value: float = 0.0
+        self._current_inserted_value: int = 0
         self._item_mapping = {item.name: item for item in self.items}
         self._item_vended_flag = False
 

@@ -2,6 +2,7 @@ from common.models import Coin
 from common.constants import CoinBoundary, CoinValue
 from typing import List
 from external.coins import VALUE_MAPPING
+from decimal import Decimal
 
 MAPPING_BY_WEIGHT = {
     5.67: CoinValue.QUARTER,
@@ -18,7 +19,7 @@ MAPPING_BY_DIAMETER = {
 }
 
 
-def determine_value_by_weight(coin: Coin) -> float:
+def determine_value_by_weight(coin: Coin) -> int:
     """
     Converts a coin based on its weight to its value.
 
@@ -26,7 +27,7 @@ def determine_value_by_weight(coin: Coin) -> float:
         coin: [common.models.Coin]: A coin object.
 
     Returns:
-        [float]: The value of the coin
+        [int]: The value of the coin
     """
 
     if coin.weight >= CoinBoundary.MAX_WEIGHT or coin.weight <= CoinBoundary.MIN_WEIGHT:
@@ -35,7 +36,7 @@ def determine_value_by_weight(coin: Coin) -> float:
     return MAPPING_BY_WEIGHT.get(coin.weight, 0.0)
 
 
-def determine_value_by_diameter(coin: Coin):
+def determine_value_by_diameter(coin: Coin) -> int:
     """
     Converts a coin based on its diameter to its value.
 
@@ -43,7 +44,7 @@ def determine_value_by_diameter(coin: Coin):
         coin: [common.models.Coin]: A coin object.
 
     Returns:
-        [float]: The value of the coin
+        [int]: The value of the coin
     """
 
     if (
@@ -55,28 +56,26 @@ def determine_value_by_diameter(coin: Coin):
     return MAPPING_BY_DIAMETER.get(coin.diameter, 0.0)
 
 
-def determine_return_coins(change_value: float) -> List[Coin]:
+def determine_return_coins(change_value: int) -> List[Coin]:
     """
     Recursively builds a list of coins of largest to smallest until remaining change is 0.
 
     Parameters:
-        change_value: [float] - The remaining value worth of coins left to be returned.
+        change_value: [int] - The remaining value worth of coins left to be returned. (value = 100*cents)
 
     Returns:
         [List[Coin]]: Coins to be returned.
     """
 
-    # NOTE: Convert to decimal to avoid floating point math at larger amounts of change?
-    # Note: Or multiple all values by 100 and just use ints?
     # Taking advantage of the fact that Python dicts are now inherently "Ordered" in their keys.
     change = []
 
-    value: float
+    value: int
     coin: Coin
     for value, coin in VALUE_MAPPING.items():
         if value <= change_value:
             change.append(coin)
-            change_value = change_value - value
+            change_value = change_value - (value)
 
             change.extend(determine_return_coins(change_value))
             break
