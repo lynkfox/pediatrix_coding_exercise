@@ -99,8 +99,27 @@ class VendingMachine:
             return None
 
     def check_display(self):
+        """
+        Checks the current display message. Contains some logic to reset the display message after a successful vend.
+
+        Returns:
+            [str]: The display message.
+        """
         if self.display == DisplayMessage.THANK_YOU and self._item_vended_flag is False:
             self.display = DisplayMessage.INSERT_COIN
 
         self._item_vended_flag = False
         return self.display
+
+    def make_change(self):
+        """
+        Determines the change necessary and adds coins to the coin return.
+
+        Parameters:
+            None
+
+        Returns:
+            None
+        """
+
+        pass

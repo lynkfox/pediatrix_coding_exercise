@@ -2,7 +2,7 @@ from common.vending_machine import VendingMachine
 from common.constants import DisplayMessage
 from common.models import Product
 from external.item_stock import COLA, CHIPS
-from external.coins import DIME, PENNY
+from external.coins import DIME, PENNY, NICKLE
 import pytest
 
 
@@ -182,3 +182,41 @@ class Test_VendingMachine_check_display:
         assert (
             self.test_object.check_display() == f"{DisplayMessage.PRICE}: {COLA.cost}"
         )
+
+
+class Test_VendingMachine_make_change:
+    def setup(self):
+        self.test_object = VendingMachine()
+
+    def teardown(self):
+        del self.test_object
+
+    def test_item_not_vended_then_make_change_is_empty(self):
+        self.test_object.make_change()
+        assert len(self.test_object.coin_return) == 0
+
+    def test_adds_a_single_nickle_to_coin_return_if_change_is_value_equal_to_nickle(
+        self,
+    ):
+        self.test_object.current_inserted_value = COLA.cost + 0.05
+        self.test_object.vend_product("Cola")
+
+        self.test_object.make_change()
+        assert len(self.test_object.coin_return) == 1
+        assert NICKLE in self.test_object.coin_return
+
+    def test_adds_a_single_dime_to_coin_return_if__change_is_value_equal_to_dime(self):
+        self.test_object.current_inserted_value = COLA.cost + 0.1
+        self.test_object.vend_product("Cola")
+
+        self.test_object.make_change()
+        assert len(self.test_object.coin_return) == 1
+        assert NICKLE in self.test_object.coin_return
+
+    def test_adds_multiple_coins_to_coin_return_if_value_of_change_greater_than_single_coin_value(
+        self,
+    ):
+        self.test_object.current_inserted_value = COLA.cost + 1
+        self.test_object.vend_product("Cola")
+        self.test_object.make_change()
+        assert len(self.test_object.coin_return) > 1
