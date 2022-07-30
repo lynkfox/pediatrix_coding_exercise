@@ -19,6 +19,7 @@ class VendingMachine:
         self.items: List[Product] = [COLA, CANDY, CHIPS]
         self.display: str = DisplayMessage.INSERT_COIN
         self.current_inserted_value: float = 0.0
+        self.coin_return: List[Coin] = []
 
         self._item_mapping = {item.name: item for item in self.items}
         self._item_vended_flag = False
@@ -53,7 +54,11 @@ class VendingMachine:
 
         value = determine_value_by_weight(coin)
 
-        self.current_inserted_value += 0 if value in NOT_ACCEPTED_VALUES else value
+        if value in NOT_ACCEPTED_VALUES:
+            self.coin_return.append(coin)
+
+        else:
+            self.current_inserted_value += value
 
     def enough_value_for_product(self, product_name: str) -> bool:
         """
