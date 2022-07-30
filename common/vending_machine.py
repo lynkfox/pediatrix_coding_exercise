@@ -21,10 +21,10 @@ class VendingMachine:
         """
 
         self.items: List[Product] = [COLA, CANDY, CHIPS]
-        self.display: str = DisplayMessage.INSERT_COIN
-        self.current_inserted_value: float = 0.0
         self.coin_return: List[Coin] = []
 
+        self._display: str = DisplayMessage.INSERT_COIN
+        self._current_inserted_value: float = 0.0
         self._item_mapping = {item.name: item for item in self.items}
         self._item_vended_flag = False
 
@@ -62,9 +62,25 @@ class VendingMachine:
             self.coin_return.append(coin)
 
         else:
-            self.current_inserted_value += value
+            self._current_inserted_value += value
 
-    def enough_value_for_product(self, product_name: str) -> bool:
+    def check_display(self):
+        """
+        Checks the current display message. Contains some logic to reset the display message after a successful vend.
+
+        Returns:
+            [str]: The display message.
+        """
+        if (
+            self._display == DisplayMessage.THANK_YOU
+            and self._item_vended_flag is False
+        ):
+            self._display = DisplayMessage.INSERT_COIN
+
+        self._item_vended_flag = False
+        return self._display
+
+    def _enough_value_for_product(self, product_name: str) -> bool:
         """
         Accepts a product, and determines if enough value has been inserted into the VendingMachine.
 
@@ -75,9 +91,9 @@ class VendingMachine:
             [bool]: True if current_inserted_value is more than cost of product
         """
 
-        return self.current_inserted_value >= self.get_price(product_name)
+        return self._current_inserted_value >= self.get_price(product_name)
 
-    def vend_product(self, product_name: str) -> Optional[Product]:
+    def _vend_product(self, product_name: str) -> Optional[Product]:
         """
         Outputs the requested product if enough value is in the VendingMachine
 
@@ -93,30 +109,17 @@ class VendingMachine:
 
         product = self._item_mapping[product_name]
 
-        if self.enough_value_for_product(product_name):
-            self.display = DisplayMessage.THANK_YOU
+        if self._enough_value_for_product(product_name):
+            self._display = DisplayMessage.THANK_YOU
             self._item_vended_flag = True
-            self.current_inserted_value = self.current_inserted_value - product.cost
+            self._current_inserted_value = self._current_inserted_value - product.cost
             return product
 
         else:
-            self.display = f"{DisplayMessage.PRICE}: {product.cost}"
+            self._display = f"{DisplayMessage.PRICE}: {product.cost}"
             return None
 
-    def check_display(self):
-        """
-        Checks the current display message. Contains some logic to reset the display message after a successful vend.
-
-        Returns:
-            [str]: The display message.
-        """
-        if self.display == DisplayMessage.THANK_YOU and self._item_vended_flag is False:
-            self.display = DisplayMessage.INSERT_COIN
-
-        self._item_vended_flag = False
-        return self.display
-
-    def make_change(self):
+    def _make_change(self):
         """
         Determines the change necessary and adds coins to the coin return.
 
@@ -128,4 +131,4 @@ class VendingMachine:
         """
 
         if self._item_vended_flag is True:
-            self.coin_return = determine_return_coins(self.current_inserted_value)
+            self.coin_return = determine_return_coins(self._current_inserted_value)
