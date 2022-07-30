@@ -1,5 +1,6 @@
 from common.vending_machine import VendingMachine
 from common.constants import DisplayMessage
+from common.models import Product
 from external.item_stock import COLA, CHIPS
 from external.coins import DIME, PENNY
 import pytest
@@ -93,3 +94,25 @@ class Test_VendingMachine_enough_value_for_product:
 
     def test_returns_false_if_not_enough_for_product(self):
         assert self.test_object.enough_value_for_product("Cola") is False
+
+
+class Test_VendingMachine_vend_product:
+    def setup(self):
+        self.test_object = VendingMachine()
+
+    def teardown(self):
+        del self.test_object
+
+    def test_returns_product_if_enough_value_in_machine(self):
+        self.test_object.current_inserted_value = COLA.cost
+
+        assert isinstance(self.test_object.vend_product("Cola"), Product)
+
+    def test_properly_returns_cola_product_if_provided_Cola(self):
+        self.test_object.current_inserted_value = COLA.cost
+
+        assert self.test_object.vend_product("Cola") == COLA
+
+    def test_raises_exception_if_not_enough_value(self):
+        with pytest.raises(Exception, match="NotEnoughInsertedValue"):
+            self.test_object.vend_product("Cola")
